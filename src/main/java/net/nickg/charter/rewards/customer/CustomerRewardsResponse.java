@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static java.util.Map.entry;
-
 @Data
 public class CustomerRewardsResponse {
     private int customerId;

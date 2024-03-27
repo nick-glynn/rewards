@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class CustomerRewardsServiceTest {
@@ -53,4 +53,5 @@ class CustomerRewardsServiceTest {
         assertEquals(0, customer3.getMonthlyRewardTotals().get(Month.of(2)));
         assertEquals(30, customer3.getMonthlyRewardTotals().get(Month.of(3)));
     }
+
 }
