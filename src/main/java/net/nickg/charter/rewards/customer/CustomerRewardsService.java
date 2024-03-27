@@ -14,6 +14,9 @@ public class CustomerRewardsService {
     public static final int DOUBLE_REWARD_AMOUNT_MIN = 100;
 
     public List<CustomerRewardsResponse> calculateRewards(List<Purchase> purchases) {
+        Objects.requireNonNull(purchases, "Purchases cannot be null");
+        var months = EnumSet.of(Month.JANUARY, Month.FEBRUARY, Month.MARCH);
+
         Map<Integer, Map<Month, Integer>> rewards = purchases.stream()
                 .filter(purchase -> purchase.getAmount() > 50)
                 .collect(
@@ -25,9 +28,6 @@ public class CustomerRewardsService {
                                 )
                         )
                 );
-
-        var months = EnumSet.of(Month.JANUARY, Month.FEBRUARY, Month.MARCH);
-        //Set<Month> months = rewards.values().stream().flatMap(map -> map.keySet().stream().distinct()).collect(Collectors.toSet());
 
         return rewards.entrySet()
                 .stream()
