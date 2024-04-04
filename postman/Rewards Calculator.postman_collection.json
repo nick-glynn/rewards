@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "b5814f55-3f42-4459-843c-8dc582e36cf8",
+		"name": "Rewards Calculator",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30128952"
+	},
+	"item": [
+		{
+			"name": "Calculate Rewards Points",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "[\r\n    {\r\n        \"customerId\": 101,\r\n        \"amount\": 100,\r\n        \"date\": \"2024-01-10\"\r\n    },\r\n    {\r\n        \"customerId\": 101,\r\n        \"amount\": 150,\r\n        \"date\": \"2024-01-20\"\r\n    },\r\n    {\r\n        \"customerId\": 101,\r\n        \"amount\": 120,\r\n        \"date\": \"2024-02-05\"\r\n    },\r\n    {\r\n        \"customerId\": 101,\r\n        \"amount\": 130,\r\n        \"date\": \"2024-02-25\"\r\n    },\r\n    {\r\n        \"customerId\": 101,\r\n        \"amount\": 110,\r\n        \"date\": \"2024-03-15\"\r\n    },\r\n    {\r\n        \"customerId\": 102,\r\n        \"amount\": 200,\r\n        \"date\": \"2024-01-05\"\r\n    },\r\n    {\r\n        \"customerId\": 102,\r\n        \"amount\": 210,\r\n        \"date\": \"2024-02-10\"\r\n    },\r\n    {\r\n        \"customerId\": 102,\r\n        \"amount\": 220,\r\n        \"date\": \"2024-02-20\"\r\n    },\r\n    {\r\n        \"customerId\": 102,\r\n        \"amount\": 230,\r\n        \"date\": \"2024-03-25\"\r\n    },\r\n    {\r\n        \"customerId\": 103,\r\n        \"amount\": 300,\r\n        \"date\": \"2024-01-15\"\r\n    },\r\n    {\r\n        \"customerId\": 103,\r\n        \"amount\": 310,\r\n        \"date\": \"2024-01-25\"\r\n    },\r\n    {\r\n        \"customerId\": 103,\r\n        \"amount\": 320,\r\n        \"date\": \"2024-02-15\"\r\n    },\r\n    {\r\n        \"customerId\": 103,\r\n        \"amount\": 330,\r\n        \"date\": \"2024-03-05\"\r\n    },\r\n    {\r\n        \"customerId\": 103,\r\n        \"amount\": 340,\r\n        \"date\": \"2024-03-15\"\r\n    },\r\n    {\r\n        \"customerId\": 103,\r\n        \"amount\": 350,\r\n        \"date\": \"2024-03-25\"\r\n    }\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/customer/calculate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"customer",
+						"calculate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
