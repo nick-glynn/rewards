@@ -1,9 +1,9 @@
 package net.nickg.charter.rewards;
 
 public class RewardsPointsCalculator {
-    static final int REWARDS_TIER_1_AMOUNT_MIN = 50;
-    static final int REWARDS_TIER_1_POINTS_MAX = 50;
-    static final int REWARDS_TIER_2_AMOUNT_MIN = 100;
+    public static final int REWARDS_TIER_1_AMOUNT_MIN = 50;
+    public static final int REWARDS_TIER_1_POINTS_MAX = 50;
+    public static final int REWARDS_TIER_2_AMOUNT_MIN = 100;
 
     public static int calculateRewardsPoints(int amount) {
         int points = 0;

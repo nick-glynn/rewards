@@ -15,13 +15,19 @@ public class CustomerRewardsService {
         List<CustomerRewardsResponse> customerRewards = new ArrayList<>();
 
         for (Purchase purchase : purchases) {
+            if (purchase.getAmount() <= RewardsPointsCalculator.REWARDS_TIER_1_AMOUNT_MIN) {
+                continue;
+            }
+
             CustomerRewardsResponse customer = customerRewards.stream()
                     .filter(x -> x.getCustomerId() == purchase.getCustomerId())
                     .findFirst()
                     .orElse(new CustomerRewardsResponse(purchase.getCustomerId()));
-            if (customer.getOverallTotal() == 0) {
+
+            if (!customerRewards.contains(customer)) {
                 customerRewards.add(customer);
             }
+            
             customer.addRewardsPoints(purchase.getDate().getMonth(), RewardsPointsCalculator.calculateRewardsPoints(purchase.getAmount()));
         }
 
