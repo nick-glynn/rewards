@@ -6,9 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class CustomerRewardsServiceTest {
@@ -17,7 +18,23 @@ class CustomerRewardsServiceTest {
     private CustomerRewardsService customerRewardsService;
 
     @Test
-    void test_calculateRewards() {
+    void calculateRewards_nullInput_throwsException() {
+        assertThrows(
+            NullPointerException.class, () -> {
+                customerRewardsService.calculateRewards(null);
+            }
+        );
+    }
+
+    @Test
+    void calculateRewards_emptyList_returnsEmptyList() {
+        List<Purchase> purchases = new ArrayList<>();
+        List<CustomerRewardsResponse> rewards = customerRewardsService.calculateRewards(purchases);
+        assertTrue(rewards.isEmpty());
+    }
+
+    @Test
+    void calculateRewards_validPurchases_returnsCorrectResponse() {
         var purchases = List.of(
                 new Purchase(1, 120, LocalDate.of(2024, 1, 10)), // 90 points
                 new Purchase(1, 150, LocalDate.of(2024, 2, 10)), // 150 points

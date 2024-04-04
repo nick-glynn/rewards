@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/customer")
 public class CustomerRewardsController {
-
     private final CustomerRewardsService customerRewardsService;
 
     public CustomerRewardsController(CustomerRewardsService customerRewardsService) {
