@@ -1,4 +1,13 @@
 # Rewards Points Calculator
+## Description
+This is a simple spring boot application that provides a web service endpoint that calculates rewards points for customers based on the amount of purchases over the last 3 months.
+
+The API endpoint accepts POST requests to /customer/calculate with a list of purchases to be provided as the request body in JSON format (an example request with a list of purchases is included in the postman directory).
+
+## Assumptions
+- Purchase amounts and rewards points won't exceed the size limit of an integer even when summed.
+- The prior 3-month period is set to be January, February, and March.  This is done to isolate the dates as a separate concern and simplify data used for testing.
+- The data passed in is valid and well-formed.
 
 ### How To Run
 1. Clone

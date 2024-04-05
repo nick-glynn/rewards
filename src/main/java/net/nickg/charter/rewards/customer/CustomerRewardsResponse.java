@@ -3,33 +3,29 @@ package net.nickg.charter.rewards.customer;
 import lombok.Data;
 
 import java.time.Month;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
 public class CustomerRewardsResponse {
     private int customerId;
-    private Map<Month, Integer> monthlyRewardTotals = new HashMap<>();
+    private Map<Month, Integer> monthlyRewardTotals;
     private int overallTotal = 0;
 
-    public CustomerRewardsResponse(int customerId) {
+    public CustomerRewardsResponse(int customerId, EnumSet<Month> months) {
         this.customerId = customerId;
-        this.monthlyRewardTotals = new HashMap<>();
-        this.monthlyRewardTotals.put(Month.JANUARY, 0);
-        this.monthlyRewardTotals.put(Month.FEBRUARY, 0);
-        this.monthlyRewardTotals.put(Month.MARCH, 0);
-    }
-
-    public CustomerRewardsResponse(Map<Integer, Map<Month, Integer>> rewards) {
-        rewards.forEach((customerId, monthlyRewards) -> {
-            this.customerId = customerId;
-            monthlyRewards.forEach(this::addRewardsPoints);
-        });
+        initializeMonthlyRewardsTotals(months);
     }
 
     public void addRewardsPoints(Month month, int points) {
         this.monthlyRewardTotals.merge(month, points, Integer::sum);
         this.overallTotal += points;
+    }
+
+    private void initializeMonthlyRewardsTotals(EnumSet<Month> months) {
+        this.monthlyRewardTotals = new HashMap<>();
+        months.forEach(month -> this.monthlyRewardTotals.put(month, 0));
     }
 }
 

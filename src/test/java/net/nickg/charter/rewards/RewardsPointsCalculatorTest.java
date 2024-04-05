@@ -6,17 +6,9 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class RewardsPointsCalculatorTest {
-
-    @ParameterizedTest
-    @MethodSource("amountPointsProvider")
-    void testCalculateRewardsPoints(int amount, int expectedPoints) {
-        int calculatedPoints = RewardsPointsCalculator.calculateRewardsPoints(amount);
-        assertEquals(expectedPoints, calculatedPoints);
-    }
-
     private static Stream<Arguments> amountPointsProvider() {
         return Stream.of(
                 // Arguments are in the form of (amount, expectedPoints)
@@ -27,5 +19,27 @@ class RewardsPointsCalculatorTest {
                 Arguments.of(100, 50), // amount: 100 - expected points: 50
                 Arguments.of(120, 90)  // amount: 120 - expected points: 90
         );
+    }
+
+    private static Stream<Arguments> negativeAmountPointsProvider() {
+        return Stream.of(
+                // Arguments are in the form of (amount, expectedPoints)
+                Arguments.of(-5, 0), // amount: -5 - expected points: 0
+                Arguments.of(-1, 0) // amount: -1 - expected points: 0
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("amountPointsProvider")
+    void calculateRewardsPoints_validAmounts_returnCorrectRewardsPoints(int amount, int expectedPoints) {
+        int calculatedPoints = RewardsPointsCalculator.calculateRewardsPoints(amount);
+        assertEquals(expectedPoints, calculatedPoints);
+    }
+
+    @ParameterizedTest
+    @MethodSource("negativeAmountPointsProvider")
+    void calculateRewardsPoints_negativeAmounts_returnZeroPoints(int amount, int expectedPoints) {
+        int calculatedPoints = RewardsPointsCalculator.calculateRewardsPoints(amount);
+        assertEquals(expectedPoints, calculatedPoints);
     }
 }

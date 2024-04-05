@@ -9,6 +9,7 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -31,6 +32,40 @@ class CustomerRewardsServiceTest {
         List<Purchase> purchases = new ArrayList<>();
         List<CustomerRewardsResponse> rewards = customerRewardsService.calculateRewards(purchases);
         assertTrue(rewards.isEmpty());
+    }
+
+    @Test
+    void calculateRewards_purchaseBeforeJanuary_excludedFromProcessing() {
+        var purchases = List.of(
+                new Purchase(1, 120, LocalDate.of(2023, 12, 10))
+        );
+
+        var actual = customerRewardsService.calculateRewards(purchases);
+
+        assertTrue(actual.isEmpty());
+    }
+
+    @Test
+    void calculateRewards_purchasesIncludeOneBeforeJanuary_returnAllOthers() {
+        var purchases = List.of(
+                new Purchase(1, 105, LocalDate.of(2023, 12, 10)),
+                new Purchase(1, 120, LocalDate.of(2024, 1, 10))
+        );
+
+        var actual = customerRewardsService.calculateRewards(purchases);
+
+        assertThat(actual).hasSize(1);
+    }
+
+    @Test
+    void calculateRewards_purchaseAfterMarch_excludedFromProcessing() {
+        var purchases = List.of(
+                new Purchase(1, 120, LocalDate.of(2024, 4, 10))
+        );
+
+        var actual = customerRewardsService.calculateRewards(purchases);
+
+        assertTrue(actual.isEmpty());
     }
 
     @Test
