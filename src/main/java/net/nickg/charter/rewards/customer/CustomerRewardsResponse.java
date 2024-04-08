@@ -23,6 +23,10 @@ public class CustomerRewardsResponse {
         this.overallTotal += points;
     }
 
+    public void addRewardsPoints(Map<Month, Integer> points) {
+        points.forEach(this::addRewardsPoints);
+    }
+
     private void initializeMonthlyRewardsTotals(EnumSet<Month> months) {
         this.monthlyRewardTotals = new HashMap<>();
         months.forEach(month -> this.monthlyRewardTotals.put(month, 0));

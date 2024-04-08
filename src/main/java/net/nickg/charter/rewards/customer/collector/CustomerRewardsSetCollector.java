@@ -1,7 +1,8 @@
-package net.nickg.charter.rewards.customer;
+package net.nickg.charter.rewards.customer.collector;
 
 import net.nickg.charter.rewards.RewardsPointsCalculator;
-import org.springframework.stereotype.Service;
+import net.nickg.charter.rewards.customer.CustomerRewardsResponse;
+import net.nickg.charter.rewards.customer.Purchase;
 
 import java.time.Month;
 import java.util.Collection;
@@ -12,15 +13,13 @@ import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.stream.Collector;
 
-@Service
-public class CustomerRewardsService {
+public class CustomerRewardsSetCollector {
     private static final EnumSet<Month> months = EnumSet.of(Month.JANUARY, Month.FEBRUARY, Month.MARCH);
-    private static final Collector<CustomerRewardsResponse, ?, HashSet<CustomerRewardsResponse>> toCustomerRewardsSet =
-            Collector.of(
-                    HashSet::new,
-                    accumulateCustomerRewardsSet(),
-                    combineCustomerRewardsSets()
-            );
+    private static final Collector<CustomerRewardsResponse, ?, HashSet<CustomerRewardsResponse>> toCustomerRewardsSet = Collector.of(
+            HashSet::new,
+            accumulateCustomerRewardsSet(),
+            combineCustomerRewardsSets()
+    );
 
     private static BinaryOperator<HashSet<CustomerRewardsResponse>> combineCustomerRewardsSets() {
         return (result, others) -> {

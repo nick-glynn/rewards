@@ -5,12 +5,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import static java.time.Month.FEBRUARY;
+import static java.time.Month.JANUARY;
+import static java.time.Month.MARCH;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class CustomerRewardsServiceTest {
@@ -21,16 +25,16 @@ class CustomerRewardsServiceTest {
     @Test
     void calculateRewards_nullInput_throwsException() {
         assertThrows(
-            NullPointerException.class, () -> {
-                customerRewardsService.calculateRewards(null);
-            }
+                NullPointerException.class, () -> {
+                    customerRewardsService.calculateRewards(null);
+                }
         );
     }
 
     @Test
     void calculateRewards_emptyList_returnsEmptyList() {
-        List<Purchase> purchases = new ArrayList<>();
-        List<CustomerRewardsResponse> rewards = customerRewardsService.calculateRewards(purchases);
+        Collection<Purchase> purchases = new ArrayList<>();
+        Collection<CustomerRewardsResponse> rewards = customerRewardsService.calculateRewards(purchases);
         assertTrue(rewards.isEmpty());
     }
 
@@ -83,27 +87,31 @@ class CustomerRewardsServiceTest {
 
         var actual = customerRewardsService.calculateRewards(purchases);
 
-        assertEquals(3, actual.size());
+        var customerRewards = actual.stream().toList();
 
-        CustomerRewardsResponse customer1 = actual.get(0);
-        CustomerRewardsResponse customer2 = actual.get(1);
-        CustomerRewardsResponse customer3 = actual.get(2);
-
-        assertEquals(1, customer1.getCustomerId());
-        assertEquals(2, customer2.getCustomerId());
-        assertEquals(3, customer3.getCustomerId());
-        assertEquals(245, customer1.getOverallTotal());
-        assertEquals(50, customer2.getOverallTotal());
-        assertEquals(31, customer3.getOverallTotal());
-        assertEquals(90, customer1.getMonthlyRewardTotals().get(Month.of(1)));
-        assertEquals(155, customer1.getMonthlyRewardTotals().get(Month.of(2)));
-        assertEquals(0, customer1.getMonthlyRewardTotals().get(Month.of(3)));
-        assertEquals(50, customer2.getMonthlyRewardTotals().get(Month.of(1)));
-        assertEquals(0, customer2.getMonthlyRewardTotals().get(Month.of(2)));
-        assertEquals(0, customer2.getMonthlyRewardTotals().get(Month.of(3)));
-        assertEquals(1, customer3.getMonthlyRewardTotals().get(Month.of(1)));
-        assertEquals(0, customer3.getMonthlyRewardTotals().get(Month.of(2)));
-        assertEquals(30, customer3.getMonthlyRewardTotals().get(Month.of(3)));
+        assertThat(customerRewards)
+                .hasSize(3)
+                .anySatisfy(customer1Rewards -> {
+                    assertThat(customer1Rewards.getCustomerId()).isEqualTo(1);
+                    assertThat(customer1Rewards.getOverallTotal()).isEqualTo(245);
+                    assertThat(customer1Rewards.getMonthlyRewardTotals().get(JANUARY)).isEqualTo(90);
+                    assertThat(customer1Rewards.getMonthlyRewardTotals().get(FEBRUARY)).isEqualTo(155);
+                    assertThat(customer1Rewards.getMonthlyRewardTotals().get(MARCH)).isEqualTo(0);
+                })
+                .anySatisfy(customer2Rewards -> {
+                    assertThat(customer2Rewards.getCustomerId()).isEqualTo(2);
+                    assertThat(customer2Rewards.getOverallTotal()).isEqualTo(50);
+                    assertThat(customer2Rewards.getMonthlyRewardTotals().get(JANUARY)).isEqualTo(50);
+                    assertThat(customer2Rewards.getMonthlyRewardTotals().get(FEBRUARY)).isEqualTo(0);
+                    assertThat(customer2Rewards.getMonthlyRewardTotals().get(MARCH)).isEqualTo(0);
+                })
+                .anySatisfy(customer3Rewards -> {
+                    assertThat(customer3Rewards.getCustomerId()).isEqualTo(3);
+                    assertThat(customer3Rewards.getOverallTotal()).isEqualTo(31);
+                    assertThat(customer3Rewards.getMonthlyRewardTotals().get(JANUARY)).isEqualTo(1);
+                    assertThat(customer3Rewards.getMonthlyRewardTotals().get(FEBRUARY)).isEqualTo(0);
+                    assertThat(customer3Rewards.getMonthlyRewardTotals().get(MARCH)).isEqualTo(30);
+                });
     }
 
 }
